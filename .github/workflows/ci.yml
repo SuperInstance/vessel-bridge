@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [main, production-round3-2026-07-10]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run tests
+        run: PYTHONPATH=src pytest

@@ -11,7 +11,7 @@ import time
 
 import pytest
 
-from src.bridge import (
+from bridge import (
     ActuatorCommand,
     ActuatorConfig,
     ActuatorType,
