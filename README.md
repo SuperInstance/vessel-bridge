@@ -8,6 +8,20 @@ Hardware Abstraction Layer for ESP32 to Jetson to Cloud. Unified sensor/actuator
 ESP32 (micro) ←→ UART/I2C/SPI ←→ Jetson (edge) ←→ MQTT/HTTP ←→ Cloud (cocapn)
 ```
 
+## Current Status
+
+- ✅ **Real today**: the sensor/actuator data model, domain presets
+  (marine/aerial/industrial/home/medical), value clamping,
+  safety-critical command logging, JSON state export, and the ESP32
+  binary protocol encoder/decoder with CRC8 validation.
+- 🔮 **Not yet wired**: `command_actuator()` validates and clamps the
+  value but never actually sends it to hardware (`_route_command` is
+  commented out). `read_sensor()` only returns cached data; the cache is
+  only populated when something calls `update_reading()`, and no real
+  transport driver (serial, I2C, SPI, MQTT, HTTP, …) is implemented in
+  this file. This repository is a HAL skeleton + protocol layer, not an
+  end-to-end hardware bridge yet.
+
 ## Domains
 
 - **Marine** — GPS, compass, sonar, depth, thrusters, rudder, winch
