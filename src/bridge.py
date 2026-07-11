@@ -429,7 +429,7 @@ MARINE_ACTUATORS = [
     ActuatorConfig("thruster_stbd", ActuatorType.THRUSTER, TransportType.PWM, "GPIO13", -1.0, 1.0, VesselDomain.MARINE),
     ActuatorConfig("rudder", ActuatorType.RUDDER, TransportType.PWM, "GPIO14", -45.0, 45.0, VesselDomain.MARINE),
     ActuatorConfig("light_nav", ActuatorType.LIGHT, TransportType.RELAY, "GPIO15", 0.0, 1.0, VesselDomain.MARINE),
-    ActuatorConfig("winch", ActuatorType.WINCH, ActuatorType.RELAY, "GPIO16", 0.0, 1.0, VesselDomain.MARINE),
+    ActuatorConfig("winch", ActuatorType.WINCH, TransportType.RELAY, "GPIO16", 0.0, 1.0, VesselDomain.MARINE),
 ]
 
 AERIAL_SENSORS = [

@@ -115,6 +115,13 @@ class TestVesselCreation:
         assert set(vessel.sensors.keys()) == expected_sensors
         assert set(vessel.actuators.keys()) == expected_actuators
 
+    def test_marine_preset_uses_transport_type_for_actuators(self):
+        vessel = create_marine_vessel("boat")
+        for aid, cfg in vessel.actuators.items():
+            assert isinstance(cfg.transport, TransportType), (
+                f"{aid} transport must be TransportType, got {type(cfg.transport).__name__}"
+            )
+
     def test_create_aerial_vessel_registers_expected_sensors_and_actuators(self):
         vessel = create_aerial_vessel("drone-01")
         assert vessel.vessel_id == "drone-01"
