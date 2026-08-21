@@ -387,6 +387,9 @@ class ESP32Protocol:
         if data[0] != ESP32Protocol.SYNC_0 or data[1] != ESP32Protocol.SYNC_1:
             return None
         length = struct.unpack(">H", data[2:4])[0]
+        # Header (5 bytes) + payload + CRC byte must all be present.
+        if len(data) < 5 + length + 1:
+            return None
         frame_type = data[4]
         payload = data[5:5 + length]
         expected_crc = data[5 + length]
@@ -426,7 +429,7 @@ MARINE_ACTUATORS = [
     ActuatorConfig("thruster_stbd", ActuatorType.THRUSTER, TransportType.PWM, "GPIO13", -1.0, 1.0, VesselDomain.MARINE),
     ActuatorConfig("rudder", ActuatorType.RUDDER, TransportType.PWM, "GPIO14", -45.0, 45.0, VesselDomain.MARINE),
     ActuatorConfig("light_nav", ActuatorType.LIGHT, TransportType.RELAY, "GPIO15", 0.0, 1.0, VesselDomain.MARINE),
-    ActuatorConfig("winch", ActuatorType.WINCH, ActuatorType.RELAY, "GPIO16", 0.0, 1.0, VesselDomain.MARINE),
+    ActuatorConfig("winch", ActuatorType.WINCH, TransportType.RELAY, "GPIO16", 0.0, 1.0, VesselDomain.MARINE),
 ]
 
 AERIAL_SENSORS = [
