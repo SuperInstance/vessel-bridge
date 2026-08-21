@@ -85,6 +85,11 @@ class TestESP32Protocol:
     def test_decode_bad_sync_returns_none(self):
         assert ESP32Protocol.decode_frame(b"\x00\x55\x00\x00\x01\x00") is None
 
+    def test_decode_truncated_payload_returns_none(self):
+        """A frame with valid sync but fewer payload bytes than declared must not crash."""
+        # Sync + declared length 10 + type, but only 6 bytes total -> missing payload/CRC.
+        assert ESP32Protocol.decode_frame(b"\xAA\x55\x00\x0A\x01\x00") is None
+
 
 class TestVesselCreation:
     def test_create_marine_vessel_registers_expected_sensors_and_actuators(self):
@@ -109,6 +114,13 @@ class TestVesselCreation:
         }
         assert set(vessel.sensors.keys()) == expected_sensors
         assert set(vessel.actuators.keys()) == expected_actuators
+
+    def test_marine_preset_uses_transport_type_for_actuators(self):
+        vessel = create_marine_vessel("boat")
+        for aid, cfg in vessel.actuators.items():
+            assert isinstance(cfg.transport, TransportType), (
+                f"{aid} transport must be TransportType, got {type(cfg.transport).__name__}"
+            )
 
     def test_create_aerial_vessel_registers_expected_sensors_and_actuators(self):
         vessel = create_aerial_vessel("drone-01")
